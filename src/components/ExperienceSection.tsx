@@ -1,31 +1,46 @@
-import { Calendar, MapPin } from 'lucide-react';
+import { Calendar, MapPin, Building2 } from 'lucide-react';
 
 const experiences = [
   {
-    title: 'IT Support Engineer',
-    company: 'Current Position',
-    location: 'Belgium',
-    period: '2021 - Present',
+    title: 'All-around IT Support',
+    company: 'AZ Sint-Blasius',
+    location: 'Dendermonde, Belgium',
+    period: '01/2021 - 06/2024',
     description: [
-      'Provide first and second-line technical support to end users',
-      'Troubleshoot hardware, software, and network issues',
-      'Manage Active Directory user accounts and group policies',
-      'Deploy and configure workstations and peripherals',
-      'Document technical procedures and solutions',
+      'IT Support, User and Access Administrator',
+      'System and Network Administrator',
+      'Application support, hardware installs/configs',
+      'Worked with Active Directory, M365, Azure, SCCM, SCOM',
+      'Managed Lansweeper, Veeam, Barracuda, Aruba, KWS, SAP',
     ],
+    tools: ['Active Directory', 'M365', 'Azure', 'SCCM', 'Barracuda', 'KWS', 'SAP'],
   },
   {
-    title: 'Junior System Administrator',
-    company: 'Growing Role',
+    title: 'System Engineer / Administrator (Training)',
+    company: 'CEVORA',
     location: 'Belgium',
-    period: 'Ongoing',
+    period: '2019 - 2020',
     description: [
-      'Assist with server maintenance and monitoring',
-      'Support virtualization environments (VMware/Hyper-V)',
-      'Help manage backup and disaster recovery systems',
-      'Participate in infrastructure upgrade projects',
-      'Learning cloud technologies (Azure/AWS basics)',
+      'Set up domain infrastructure with IP and netmask',
+      'Created and managed servers: Domain controllers, firewall, routers, backup, AD',
+      'Managed Print server, SCCM server, WPS',
+      'Created secure GPOs and user rights management',
+      'Built scalable and future-proof infrastructure',
     ],
+    tools: ['PowerShell', 'MS Server', 'AGDLP', 'GPO', 'VPN', 'Oracle', 'Wireshark'],
+  },
+  {
+    title: 'Technician Fiber Optics',
+    company: 'The Last Mile',
+    location: 'Belgium',
+    period: '2018 - 2019',
+    description: [
+      'Groundwork and fiber optic cable provision',
+      'Install fiber optics to home for clients',
+      'Install facade cupboards and connect fiber optics',
+      'Weld fiber optics and connectors',
+    ],
+    tools: ['Fiber welding toolbox', 'Aerial work platform', 'Small excavators'],
   },
 ];
 
@@ -38,7 +53,7 @@ const ExperienceSection = () => {
             Work <span className="gradient-text">Experience</span>
           </h2>
           <p className="section-subtitle">
-            My professional journey in IT support and system administration
+            My professional journey in IT and technical roles
           </p>
         </div>
 
@@ -75,7 +90,7 @@ const ExperienceSection = () => {
                     
                     <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
                       <span className="flex items-center gap-1">
-                        <Calendar size={14} />
+                        <Building2 size={14} />
                         {exp.company}
                       </span>
                       <span className="flex items-center gap-1">
@@ -84,7 +99,7 @@ const ExperienceSection = () => {
                       </span>
                     </div>
 
-                    <ul className="space-y-2">
+                    <ul className="space-y-2 mb-4">
                       {exp.description.map((item, i) => (
                         <li key={i} className="flex items-start gap-2 text-muted-foreground text-sm">
                           <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
@@ -92,6 +107,14 @@ const ExperienceSection = () => {
                         </li>
                       ))}
                     </ul>
+
+                    <div className="flex flex-wrap gap-2">
+                      {exp.tools.slice(0, 5).map((tool, i) => (
+                        <span key={i} className="text-xs px-2 py-1 rounded bg-muted text-muted-foreground">
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
