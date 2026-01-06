@@ -17,7 +17,7 @@ const Footer = () => {
         <div className="flex flex-col items-center gap-6">
           {/* Logo */}
           <a href="#home" className="text-2xl font-bold gradient-text">
-            JVD
+            YuriXr
           </a>
 
           {/* Social Links */}

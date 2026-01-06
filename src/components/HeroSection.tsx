@@ -24,9 +24,11 @@ const HeroSection = () => {
           {/* Profile Image */}
           <div className="relative mb-8 opacity-0 animate-fade-up">
             <div className="w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-primary/30 animate-glow">
-              <div className="w-full h-full bg-gradient-to-br from-primary/30 to-secondary flex items-center justify-center">
-                <span className="text-5xl md:text-6xl font-bold gradient-text">JVD</span>
-              </div>
+              <img 
+                src="https://i.ibb.co/XfZqYkW1/1000004328.jpg" 
+                alt="Joery Van Damme"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-4 border-background" />
           </div>
