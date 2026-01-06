@@ -38,7 +38,7 @@ const HeroSection = () => {
             Joery Van Damme
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-2 opacity-0 animate-fade-up delay-200">
-            IT Support Engineer & Junior System Administrator
+            All-around IT Support Engineer & System Administrator
           </p>
           <p className="text-primary font-medium mb-8 opacity-0 animate-fade-up delay-300">
             📍 Dendermonde, Belgium
