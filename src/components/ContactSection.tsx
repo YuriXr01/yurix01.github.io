@@ -6,7 +6,7 @@ import { z } from 'zod';
 const contactSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
   email: z.string().trim().min(1, 'Email is required').email('Please enter a valid email address').max(255, 'Email must be less than 255 characters'),
-  subject: z.string().trim().min(1, 'Subject is required').max(200, 'Subject must be less than 200 characters'),
+  subject: z.string().trim().max(200, 'Subject must be less than 200 characters').optional().default(''),
   message: z.string().trim().min(1, 'Message is required').max(5000, 'Message must be less than 5000 characters'),
 });
 
@@ -51,8 +51,7 @@ const ContactSection = () => {
     setStatus('loading');
 
     try {
-      // Replace 'your-form-id' with your actual Formspree form ID
-      const response = await fetch('https://formspree.io/f/your-form-id', {
+      const response = await fetch('https://formspree.io/f/xykzrzjn', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +129,7 @@ const ContactSection = () => {
                 <div className="mb-6 p-4 rounded-lg bg-green-500/10 border border-green-500/30 flex items-center gap-3">
                   <CheckCircle className="text-green-500" size={20} />
                   <p className="text-green-400 text-sm">
-                    Message sent successfully! I'll get back to you soon.
+                    Thank you! Your message has been sent. I'll reply soon.
                   </p>
                 </div>
               )}
@@ -185,7 +184,7 @@ const ContactSection = () => {
 
               <div className="mb-4">
                 <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                  Subject
+                  Subject <span className="text-muted-foreground text-xs">(optional)</span>
                 </label>
                 <input
                   type="text"
@@ -194,12 +193,9 @@ const ContactSection = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   maxLength={200}
-                  className={`input-field ${validationErrors.subject ? 'border-destructive' : ''}`}
+                  className="input-field"
                   placeholder="How can I help you?"
                 />
-                {validationErrors.subject && (
-                  <p className="text-destructive text-xs mt-1">{validationErrors.subject}</p>
-                )}
               </div>
 
               <div className="mb-6">
@@ -238,10 +234,6 @@ const ContactSection = () => {
                   </>
                 )}
               </button>
-
-              <p className="mt-4 text-xs text-muted-foreground text-center">
-                * Form powered by Formspree. Replace form ID with your own.
-              </p>
             </form>
           </div>
         </div>
