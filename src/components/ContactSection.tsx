@@ -1,21 +1,53 @@
 import { useState } from 'react';
 import { Mail, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { z } from 'zod';
+
+// Validation schema for contact form
+const contactSchema = z.object({
+  name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
+  email: z.string().trim().min(1, 'Email is required').email('Please enter a valid email address').max(255, 'Email must be less than 255 characters'),
+  subject: z.string().trim().min(1, 'Subject is required').max(200, 'Subject must be less than 200 characters'),
+  message: z.string().trim().min(1, 'Message is required').max(5000, 'Message must be less than 5000 characters'),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
 
 const ContactSection = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
     subject: '',
     message: '',
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    // Clear validation error when user starts typing
+    if (validationErrors[name]) {
+      setValidationErrors((prev) => ({ ...prev, [name]: '' }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationErrors({});
+    
+    // Validate form data
+    const result = contactSchema.safeParse(formData);
+    if (!result.success) {
+      const errors: Record<string, string> = {};
+      result.error.errors.forEach((err) => {
+        if (err.path[0]) {
+          errors[err.path[0] as string] = err.message;
+        }
+      });
+      setValidationErrors(errors);
+      return;
+    }
+
     setStatus('loading');
 
     try {
@@ -25,7 +57,7 @@ const ContactSection = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(result.data),
       });
 
       if (response.ok) {
@@ -123,10 +155,13 @@ const ContactSection = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    required
-                    className="input-field"
+                    maxLength={100}
+                    className={`input-field ${validationErrors.name ? 'border-destructive' : ''}`}
                     placeholder="John Doe"
                   />
+                  {validationErrors.name && (
+                    <p className="text-destructive text-xs mt-1">{validationErrors.name}</p>
+                  )}
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium mb-2">
@@ -138,10 +173,13 @@ const ContactSection = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    required
-                    className="input-field"
+                    maxLength={255}
+                    className={`input-field ${validationErrors.email ? 'border-destructive' : ''}`}
                     placeholder="john@example.com"
                   />
+                  {validationErrors.email && (
+                    <p className="text-destructive text-xs mt-1">{validationErrors.email}</p>
+                  )}
                 </div>
               </div>
 
@@ -155,10 +193,13 @@ const ContactSection = () => {
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  required
-                  className="input-field"
+                  maxLength={200}
+                  className={`input-field ${validationErrors.subject ? 'border-destructive' : ''}`}
                   placeholder="How can I help you?"
                 />
+                {validationErrors.subject && (
+                  <p className="text-destructive text-xs mt-1">{validationErrors.subject}</p>
+                )}
               </div>
 
               <div className="mb-6">
@@ -170,11 +211,14 @@ const ContactSection = () => {
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  required
+                  maxLength={5000}
                   rows={5}
-                  className="input-field resize-none"
+                  className={`input-field resize-none ${validationErrors.message ? 'border-destructive' : ''}`}
                   placeholder="Your message..."
                 />
+                {validationErrors.message && (
+                  <p className="text-destructive text-xs mt-1">{validationErrors.message}</p>
+                )}
               </div>
 
               <button
